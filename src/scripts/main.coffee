@@ -297,7 +297,10 @@ class BuilderView extends Backbone.View
     @$responseFields.sortable('destroy') if @$responseFields.hasClass('ui-sortable')
     @$responseFields.sortable
       forcePlaceholderSize: true
+      axis: 'y'
+      containment: @$responseFields.parent().parent()
       placeholder: 'sortable-placeholder'
+      handle: '.cover'
       stop: (e, ui) =>
         if ui.item.data('field-type')
           rf = @collection.create Formbuilder.helpers.defaultFieldAttrs(ui.item.data('field-type')), {$replaceEl: ui.item}
