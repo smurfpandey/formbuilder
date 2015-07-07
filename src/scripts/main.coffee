@@ -80,6 +80,10 @@ class EditFieldView extends Backbone.View
     'click .js-remove-option': 'removeOption'
     'click .js-default-updated': 'defaultUpdated'
     'input .option-label-input': 'forceRender'
+    'click .js-add-row': 'addRow'
+    'click .js-remove-row': 'removeRow'
+    'click .js-add-column': 'addColumn'
+    'click .js-remove-column': 'removeColumn'
 
   initialize: (options) ->
     {@parentView} = options
@@ -111,6 +115,36 @@ class EditFieldView extends Backbone.View
     @model.trigger "change:#{Formbuilder.options.mappings.OPTIONS}"
     @forceRender()
 
+  addColumn: (e) ->
+    $el = $(e.currentTarget)
+    i = @$el.find('.column-option').index($el.closest('.column-option'))
+    columns = @model.get(Formbuilder.options.mappings.COLUMNS) || []
+    newColumn = {value: ""}
+
+    if i > -1
+      columns.splice(i + 1, 0, newColumn)
+    else
+      columns.push newColumn
+
+    @model.set Formbuilder.options.mappings.COLUMNS, columns
+    @model.trigger "change:#{Formbuilder.options.mappings.COLUMNS}"
+    @forceRender()
+
+  addRow: (e) ->
+    $el = $(e.currentTarget)
+    i = @$el.find('.row-option').index($el.closest('.row-option'))
+    rows = @model.get(Formbuilder.options.mappings.ROWS) || []
+    newRow = {value: ""}
+
+    if i > -1
+      rows.splice(i + 1, 0, newRow)
+    else
+      rows.push newRow
+
+    @model.set Formbuilder.options.mappings.ROWS, rows
+    @model.trigger "change:#{Formbuilder.options.mappings.ROWS}"
+    @forceRender()
+
   removeOption: (e) ->
     $el = $(e.currentTarget)
     index = @$el.find(".js-remove-option").index($el)
@@ -118,6 +152,24 @@ class EditFieldView extends Backbone.View
     options.splice index, 1
     @model.set Formbuilder.options.mappings.OPTIONS, options
     @model.trigger "change:#{Formbuilder.options.mappings.OPTIONS}"
+    @forceRender()
+
+  removeRow: (e) ->
+    $el = $(e.currentTarget)
+    index = @$el.find(".js-remove-row").index($el)
+    rows = @model.get Formbuilder.options.mappings.ROWS
+    rows.splice index, 1
+    @model.set Formbuilder.options.mappings.ROWS, rows
+    @model.trigger "change:#{Formbuilder.options.mappings.ROWS}"
+    @forceRender()
+
+  removeColumn: (e) ->
+    $el = $(e.currentTarget)
+    index = @$el.find(".js-remove-column").index($el)
+    columns = @model.get Formbuilder.options.mappings.COLUMNS
+    columns.splice index, 1
+    @model.set Formbuilder.options.mappings.COLUMNS, columns
+    @model.trigger "change:#{Formbuilder.options.mappings.COLUMNS}"
     @forceRender()
 
   defaultUpdated: (e) ->
@@ -378,6 +430,8 @@ class Formbuilder
     AUTOSAVE: true
     CLEAR_FIELD_CONFIRM: false
 
+    DISABLED_FIELDS: []
+
     mappings:
       SIZE: 'field_options.size'
       UNITS: 'field_options.units'
@@ -395,7 +449,8 @@ class Formbuilder
       MINLENGTH: 'field_options.minlength'
       MAXLENGTH: 'field_options.maxlength'
       LENGTH_UNITS: 'field_options.min_max_length_units'
-
+      ROWS: 'field_options.rows'
+      COLUMNS: 'field_options.columns'
     dict:
       ALL_CHANGES_SAVED: 'All changes saved'
       SAVE_FORM: 'Save form'
@@ -413,10 +468,29 @@ class Formbuilder
 
     Formbuilder.fields[name] = opts
 
-    if opts.type == 'non_input'
-      Formbuilder.nonInputFields[name] = opts
-    else
-      Formbuilder.inputFields[name] = opts
+
+    if name not in Formbuilder.options.DISABLED_FIELDS
+        if opts.type == 'non_input'
+            Formbuilder.nonInputFields[name] = opts
+        else
+            Formbuilder.inputFields[name] = opts
+
+  @config: (options) ->
+    Formbuilder.options = $.extend(true, Formbuilder.options, options)
+
+    # Set inputFields and nonInputFields to the non-unlisted fields
+    if options.DISABLED_FIELDS?
+      listed_fields = _.omit(Formbuilder.fields, Formbuilder.options.DISABLED_FIELDS)
+      Formbuilder.inputFields = {} #clear lists used by the "Add field" view
+      Formbuilder.nonInputFields = {}
+      for name, data of listed_fields
+        if data.type == 'non_input'
+          Formbuilder.nonInputFields[name] = data
+        else
+          Formbuilder.inputFields[name] = data
+
+  saveForm: => #expose an instance method to manually save the data
+    @mainView.saveForm()
 
   constructor: (opts={}) ->
     _.extend @, Backbone.Events

@@ -218,13 +218,17 @@ $editing-border = darken($editing-bg, 7%)
 }
 
 .fb-field-wrapper .actions-wrapper a.js-duplicate,
-.fb-edit-field-wrapper .js-add-option {
+.fb-edit-field-wrapper .js-add-option,
+.fb-edit-field-wrapper .js-add-row,
+.fb-edit-field-wrapper .js-add-column {
   background-color: $affirmitive-color;
   border: none;
 }
 
 .fb-field-wrapper .actions-wrapper a.js-clear,
-.fb-edit-field-wrapper .js-remove-option {
+.fb-edit-field-wrapper .js-remove-option,
+.fb-edit-field-wrapper .js-remove-row,
+.fb-edit-field-wrapper .js-remove-column {
   background-color: $negative-color;
   border: none;
 }
@@ -322,7 +326,12 @@ $editing-border = darken($editing-bg, 7%)
   font-weight: 700;
 }
 
-.fb-edit-field-wrapper .js-add-option,.fb-edit-field-wrapper .js-remove-option {
+.fb-edit-field-wrapper .js-add-option,
+.fb-edit-field-wrapper .js-remove-option,
+.fb-edit-field-wrapper .js-add-row,
+.fb-edit-field-wrapper .js-remove-row,
+.fb-edit-field-wrapper .js-add-column,
+.fb-edit-field-wrapper .js-remove-column {
   padding: 3px 6px;
 }
 
@@ -397,4 +406,55 @@ $editing-border = darken($editing-bg, 7%)
 
 .response-field-website input {
   width: 200px;
+}
+
+ul.no-style{
+    list-style: none;
+    padding:0;
+}
+
+.grid-body{
+    padding: 5px 0;
+}
+.grid-body ul{
+  padding: 0;
+  margin: 0;
+}
+li.grid-row{
+    padding:5px;
+    display: block;
+}
+.column-data{
+    width: 49%;
+    margin-left:5px;
+}
+.column-data label{
+    font-weight: 400;
+}
+.row-data{
+    width: 49%;
+    font-weight: 600;
+}
+.pull-left{
+  float: left !important;
+}
+
+.clearfix:after,
+.clearfix:before{
+  display: table;
+  content: " "
+}
+.clearfix:after{
+  clear: both;
+}
+.list-group-item{
+  border-bottom: 1px solid #ddd;
+}
+.option-label-other{
+  margin-left: 25px;
+}
+
+.fb-option .noUi-target {
+  margin-top: 5px;
+  width: 300px;
 }

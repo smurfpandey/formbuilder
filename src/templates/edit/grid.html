@@ -1,0 +1,23 @@
+<div class='fb-edit-section-header'>Options</div>
+
+Row
+<div class='row-option' data-rv-each-row='model.<%= Formbuilder.options.mappings.ROWS %>'>
+  <input type="text" data-rv-input="row:value" class='option-label-input' />
+  <a class="js-add-row <%= Formbuilder.options.BUTTON_CLASS %>" title="Add Row"><i class='fa fa-plus-circle'></i></a>
+  <a class="js-remove-row <%= Formbuilder.options.BUTTON_CLASS %>" title="Remove Row"><i class='fa fa-minus-circle'></i></a>
+</div>
+
+<div class='fb-bottom-add'>
+  <a class="js-add-row <%= Formbuilder.options.BUTTON_CLASS %>">Add Row</a>
+</div>
+
+Column
+<div class='column-option' data-rv-each-column='model.<%= Formbuilder.options.mappings.COLUMNS %>'>
+  <input type="text" data-rv-input="column:value" class='option-label-input' />
+  <a class="js-add-column <%= Formbuilder.options.BUTTON_CLASS %>" title="Add Column"><i class='fa fa-plus-circle'></i></a>
+  <a class="js-remove-column <%= Formbuilder.options.BUTTON_CLASS %>" title="Remove Column"><i class='fa fa-minus-circle'></i></a>
+</div>
+
+<div class='fb-bottom-add'>
+  <a class="js-add-column <%= Formbuilder.options.BUTTON_CLASS %>">Add Column</a>
+</div>
