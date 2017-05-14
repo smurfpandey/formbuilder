@@ -1,24 +1,20 @@
-class FormbuilderModel extends Backbone.DeepModel
-  sync: -> # noop
+AmpersandState = require('ampersand-state')
+AmpersandCollection = require('ampersand-collection')
+
+FormbuilderModel = AmpersandState.extend({
+  extraProperties: 'allow'
   indexInDOM: ->
     $wrapper = $(".fb-field-wrapper").filter ( (_, el) => $(el).data('cid') == @cid  )
     $(".fb-field-wrapper").index $wrapper
   is_input: ->
     Formbuilder.inputFields[@get(Formbuilder.options.mappings.FIELD_TYPE)]?
+})
 
-
-class FormbuilderCollection extends Backbone.Collection
-  initialize: ->
-    @on 'add', @copyCidToModel
-
+FormbuilderCollection = AmpersandCollection.extend({
   model: FormbuilderModel
-
   comparator: (model) ->
     model.indexInDOM()
-
-  copyCidToModel: (model) ->
-    model.attributes.cid = model.cid
-
+})
 
 class ViewFieldView extends Backbone.View
   className: "fb-field-wrapper"

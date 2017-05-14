@@ -1,4 +1,4 @@
-ALL_TASKS = ['jst:all', 'coffee:all', 'concat:all', 'stylus:all', 'clean:compiled']
+ALL_TASKS = ['jst:all', 'browserify:all', 'coffee:all', 'concat:all', 'stylus:all', 'clean:compiled']
 
 # formbuilder.js must be compiled in this order:
 # 1. rivets-config
@@ -20,7 +20,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-watch')
   grunt.loadNpmTasks('grunt-contrib-clean')
   grunt.loadNpmTasks('grunt-release')
-  grunt.loadNpmTasks('grunt-karma')
+  grunt.loadNpmTasks('grunt-browserify')
 
   grunt.initConfig
 
@@ -30,6 +30,13 @@ module.exports = (grunt) ->
     distFolder: 'dist'
     vendorFolder: 'vendor'
     testFolder: 'test'
+
+    browserify:
+      all: 
+        src: []
+        dest: '<%= compiledFolder %>/ampersand.js'
+        options:
+          require: ['ampersand-state', 'ampersand-collection']
 
     jst:
       all:
@@ -55,7 +62,10 @@ module.exports = (grunt) ->
     concat:
       all:
         files:
-          '<%= distFolder %>/formbuilder.js': '<%= compiledFolder %>/*.js'
+          '<%= distFolder %>/formbuilder.js': [
+            '<%= compiledFolder %>/*.js'
+            '!<%= compiledFolder %>/ampersand.js'
+          ]
           '<%= vendorFolder %>/js/vendor.js': [
             'bower_components/ie8-node-enum/index.js'
             'bower_components/jquery/jquery.js'
@@ -71,6 +81,7 @@ module.exports = (grunt) ->
             'bower_components/rivets/dist/rivets.js'
             'bower_components/backbone/backbone.js'
             'bower_components/backbone-deep-model/src/deep-model.js'
+            '<%= compiledFolder %>/ampersand.js'
           ]
       mobile_friendly:
         files:
