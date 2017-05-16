@@ -33,6 +33,6 @@
   },
   "dependencies": {
     "ampersand-collection": "^2.0.0",
-    "ampersand-state": "^5.0.2"
+    "ampersand-model": "^8.0.0"
   }
 }

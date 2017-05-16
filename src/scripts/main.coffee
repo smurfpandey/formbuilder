@@ -1,7 +1,7 @@
-AmpersandState = require('ampersand-state')
+AmpersandModel = require('ampersand-model')
 AmpersandCollection = require('ampersand-collection')
 
-FormbuilderModel = AmpersandState.extend({
+FormbuilderModel = AmpersandModel.extend({
   extraProperties: 'allow'
   indexInDOM: ->
     $wrapper = $(".fb-field-wrapper").filter ( (_, el) => $(el).data('cid') == @cid  )
@@ -299,7 +299,7 @@ class BuilderView extends Backbone.View
       handle: '.cover'
       stop: (e, ui) =>
         if ui.item.data('field-type')
-          rf = @collection.create Formbuilder.helpers.defaultFieldAttrs(ui.item.data('field-type')), {$replaceEl: ui.item}
+          rf = @collection.add Formbuilder.helpers.defaultFieldAttrs(ui.item.data('field-type')), {$replaceEl: ui.item}
           @createAndShowEditView(rf)
 
         @handleFormUpdate()
@@ -335,7 +335,7 @@ class BuilderView extends Backbone.View
     @createField Formbuilder.helpers.defaultFieldAttrs(field_type)
 
   createField: (attrs, options) ->
-    rf = @collection.create attrs, options
+    rf = @collection.add attrs, options
     @createAndShowEditView(rf)
     @handleFormUpdate()
 

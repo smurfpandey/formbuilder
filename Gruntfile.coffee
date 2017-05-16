@@ -36,7 +36,7 @@ module.exports = (grunt) ->
         src: []
         dest: '<%= compiledFolder %>/ampersand.js'
         options:
-          require: ['ampersand-state', 'ampersand-collection']
+          require: ['ampersand-model', 'ampersand-collection']
 
     jst:
       all:
